@@ -1,0 +1,37 @@
+{
+  "name": "Secure AI Workspace",
+  "build": { "dockerfile": "Dockerfile" },
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {
+      "version": "latest",
+      "moby": true
+    }
+  },
+  "forwardPorts": [1234, 3000, 5432],
+  "portsAttributes": {
+    "5432": {
+      "label": "Postgres Database",
+      "onAutoForward": "silent"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "saoudrizwan.claude-dev",
+        "continue.continue",
+        "ms-python.python",
+        "ms-azuretools.vscode-docker" // Recommended for managing compose stacks
+      ],
+      "settings": {
+        "cline.apiProvider": "lmstudio",
+        "cline.lmStudioBaseUrl": "http://docker.internal"
+      }
+    }
+  },
+  "remoteUser": "vscode",
+  "runArgs": ["--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined"],
+  "mounts": [
+    "source=devcontainer-workspace,target=/home/vscode/.ssh,type=volume"
+  ]
+}
