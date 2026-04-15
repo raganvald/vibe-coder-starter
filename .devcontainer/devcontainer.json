@@ -8,13 +8,7 @@
       "moby": true
     }
   },
-  "forwardPorts": [1234, 3000, 5432],
-  "portsAttributes": {
-    "5432": {
-      "label": "Postgres Database",
-      "onAutoForward": "silent"
-    }
-  },
+  "forwardPorts": [1234, 3000, 11434],
   "customizations": {
     "vscode": {
       "extensions": [
@@ -24,8 +18,9 @@
         "ms-azuretools.vscode-docker" // Recommended for managing compose stacks
       ],
       "settings": {
-        "cline.apiProvider": "lmstudio",
-        "cline.lmStudioBaseUrl": "http://docker.internal"
+        "cline.apiProvider": "Ollama",
+        "cline.lmStudioBaseUrl": "http://host.docker.internal:11434",
+        "cline.model": "gemma-cline:latest"
       }
     }
   },

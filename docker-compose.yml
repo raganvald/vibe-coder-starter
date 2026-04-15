@@ -1,15 +1,23 @@
 services:
-  db:
-    image: postgres:15-alpine
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-server
     restart: always
-    environment:
-      POSTGRES_USER: devuser
-      POSTGRES_PASSWORD: devpassword
-      POSTGRES_DB: mydatabase
     ports:
-      - "5432:5432"
+      - "11434:11434"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - ollama_models:/root/.ollama
+    environment:
+      - OLLAMA_KEEP_ALIVE=-1        # Prevents unloading from memory
+      - OLLAMA_LOAD_TIMEOUT=60m     # Allows time for 26B/31B model swapping
+      - OLLAMA_FLASH_ATTENTION=1    # Optimizes processing for long prompts
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
 volumes:
-  postgres_data:
+  ollama_models:
